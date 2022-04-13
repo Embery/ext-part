@@ -8,6 +8,11 @@ Ext.define('MyApp.Application', {
 
     name: 'MyApp',
 
+    requires: [
+        'MyApp.view.main.Loader',
+        'MyApp.view.main.Login',
+        'MyApp.view.main.Main'
+    ],
     quickTips: false,
     platformConfig: {
         desktop: {
@@ -23,5 +28,28 @@ Ext.define('MyApp.Application', {
                 }
             }
         );
+    },
+
+    launch() {
+        Ext.widget('loader', {
+            listeners: {
+                afterrender: (window) => {
+                    fetch('http://localhost:3000/auth', {
+                        headers: {
+                            Authorization: 'Bearer '+localStorage.getItem('bearer')
+                        }
+                    }).then((response) => {
+                        if(response.status === 200){
+                            Ext.widget('app-main');
+                        } else {
+                            Ext.widget('login');
+                        }
+                        window.destroy();
+                    }).catch((err) => {
+                        setTimeout(() => window.fireEvent('afterrender', window), 2000);
+                    });
+                }
+            }
+        })
     }
 });

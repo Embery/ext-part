@@ -6,92 +6,51 @@
  * TODO - Replace this content of this view to suite the needs of your application.
  */
 Ext.define('MyApp.view.main.Main', {
-    extend: 'Ext.tab.Panel',
+    extend: 'Ext.panel.Panel',
     xtype: 'app-main',
 
+    renderTo: Ext.getBody(),
     requires: [
         'Ext.plugin.Viewport',
+        'MyApp.view.main.ProductModal',
+        'MyApp.model.ProductModel',
+        'MyApp.view.mainTabPanel.MainTabPanel'
     ],
-
-    viewModel: 'main',
 
     header: {
         layout: {
             align: 'stretchmax'
         },
         title: {
-            bind: {
-                text: '{name}'
-            },
+            text: 'Главное окно',
             flex: 0
         },
-        iconCls: 'fa-th-list'
     },
 
-    items: [{
-        title: 'Experimental',
-        iconCls: 'fa-user',
-        items: [
-            {
-                xtype: 'reactWrapper',
-                reactComponent: 'TestComponent',
-                props: {
-                    name: 'Айти гуру'
-                }
-            },
-            {
-                xtype: 'button',
-                text: 'Добавить',
-                handler: (btn) => {
-                    const table = btn.up('tabpanel').down('reactWrapper[reactComponent=ReactTable]');
-                    const store = table.props.store;
-                    store.totalCount++;
-                    store.add({
-                        id: store.data.items.length,
-                        name: 'Azaza',
-                        age: store.data.items.length,
-                    });
-                }
-            },
-            {
-                xtype: 'reactWrapper',
-                reactComponent: 'ReactTable',
-                props: {
-                    store: Ext.create('Ext.data.Store', {
-                        pageSize: 5,
-                        autoLoad: true,
-                        proxy: {
-                            type: 'rest',
-                            pageParam: '_page',
-                            limitParam: '_limit',
-                            url : 'https://jsonplaceholder.typicode.com/users'
-                        },
-                    }),
-                    columns: [
-                        {
-                            dataIndex: 'id',
-                            title: '#',
-                        },
-                        {
-                            dataIndex: 'name',
-                            title: 'Имя'
-                        },
-                        {
-                            dataIndex: 'username',
-                            title: 'Ник'
-                        },
-                        {
-
-                        }
-                    ]
-                }
-            }
-        ]
-    },{
-        title: 'Users',
-        iconCls: 'fa-user',
-        bind: {
-            html: '{loremIpsum}'
+    items: [
+        {
+            xtype: 'main-tabpanel'
         }
-    }]
+    ],
+
+    tbar: [
+        '->',
+        {
+            xtype: 'button',
+            text: 'Товары',
+            handler: (btn) => {
+                const tabpanel = btn.up('app-main').down('tabpanel');
+                tabpanel.add(Ext.create('MyApp.view.mainTabPanel.MainPanel'));
+            }
+        },
+        {
+            xtype: 'button',
+            text: 'Выход',
+            handler: (btn) => {
+                localStorage.removeItem('bearer');
+                Ext.widget('login');
+                btn.up('app-main').destroy();
+            }
+        }
+    ],
 });
