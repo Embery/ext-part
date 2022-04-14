@@ -3,5 +3,5 @@ Ext.define('MyApp.store.Products', {
     alias: 'store.products',
     pageSize: 10,
     autoLoad: true,
-    model: Ext.create('MyApp.model.ProductModel')
+    model: Ext.create('MyApp.model.ProductModel'),
 })

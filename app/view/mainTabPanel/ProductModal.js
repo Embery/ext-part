@@ -1,10 +1,10 @@
-Ext.define('MyApp.view.main.ProductModal', {
+Ext.define('MyApp.view.mainTabPanel.ProductModal', {
     extend: 'Ext.window.Window',
     alias: 'widget.productModal',
     modal: true,
     closable: true,
     autoShow: true,
-    width: '40%',
+    width: 300,
     height: 210,
     viewModel: {
         data: {

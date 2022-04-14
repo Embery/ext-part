@@ -5,12 +5,56 @@ Ext.define('MyApp.view.mainTabPanel.MainPanel', {
     title: 'Товары',
     requires: ['MyApp.store.Products'],
     tbar: [
+        {
+            xtype: 'textfield',
+            emptyText: 'Введите id',
+            listeners: {
+                specialkey: function(field, e){
+                    if (e.getKey() == e.ENTER) {
+                        const table = field.up('panel').down('reactWrapper[reactComponent=ReactTable]');
+                        const store = table.props.store;
+                        const value = field.getValue();
+                        if(value){
+                            store.addFilter({
+                                property: 'id',
+                                id: 'id',
+                                value,
+                                operator: '='
+                            });
+                        } else {
+                            store.removeFilter('id')
+                        }
+                    }
+                }
+            }
+        },
+        {
+            xtype: 'textfield',
+            emptyText: 'Введите название',
+            listeners: {
+                specialkey: function(field, e){
+                    if (e.getKey() == e.ENTER) {
+                        const table = field.up('panel').down('reactWrapper[reactComponent=ReactTable]');
+                        const store = table.props.store;
+                        const value = field.getValue();
+                        if(value){
+                            store.addFilter({
+                                filterFn: (elem) => elem.get('name').indexOf(value) !== -1,
+                                id: 'name'
+                            });
+                        } else {
+                            store.removeFilter('name')
+                        }
+                    }
+                }
+            }
+        },
         '->',
         {
             xtype: 'button',
             text: 'Добавить',
             handler: (btn) => {
-                const table = btn.up('tabpanel').down('reactWrapper[reactComponent=ReactTable]');
+                const table = btn.up('panel').down('reactWrapper[reactComponent=ReactTable]');
                 const store = table.props.store;
                 const record = Ext.create('MyApp.model.ProductModel');
                 Ext.widget('productModal', {

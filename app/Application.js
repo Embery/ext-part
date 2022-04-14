@@ -1,8 +1,3 @@
-/**
- * The main application class. An instance of this class is created by app.js when it
- * calls Ext.application(). This is the ideal place to handle application launch and
- * initialization details.
- */
 Ext.define('MyApp.Application', {
     extend: 'Ext.app.Application',
 
@@ -11,7 +6,8 @@ Ext.define('MyApp.Application', {
     requires: [
         'MyApp.view.main.Loader',
         'MyApp.view.main.Login',
-        'MyApp.view.main.Main'
+        'MyApp.view.main.Main',
+        'MyApp.utils.Connection'
     ],
     quickTips: false,
     platformConfig: {
@@ -33,21 +29,25 @@ Ext.define('MyApp.Application', {
     launch() {
         Ext.widget('loader', {
             listeners: {
-                afterrender: (window) => {
-                    fetch('http://localhost:3000/auth', {
-                        headers: {
-                            Authorization: 'Bearer '+localStorage.getItem('bearer')
-                        }
-                    }).then((response) => {
+                afterrender: async (window) => {
+                    try{
+                        const { response } = await MyApp.utils.Connection.request({
+                            url: 'http://localhost:3000/auth',
+                        });
                         if(response.status === 200){
                             Ext.widget('app-main');
                         } else {
                             Ext.widget('login');
                         }
+                    } catch (e) {
+                        if(e.response.status) {
+                            Ext.widget('login');
+                        } else {
+                            setTimeout(() => window.fireEvent('afterrender', window), 2000);
+                        }
+                    } finally {
                         window.destroy();
-                    }).catch((err) => {
-                        setTimeout(() => window.fireEvent('afterrender', window), 2000);
-                    });
+                    }
                 }
             }
         })

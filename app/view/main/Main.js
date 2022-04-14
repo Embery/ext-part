@@ -12,7 +12,7 @@ Ext.define('MyApp.view.main.Main', {
     renderTo: Ext.getBody(),
     requires: [
         'Ext.plugin.Viewport',
-        'MyApp.view.main.ProductModal',
+        'MyApp.view.mainTabPanel.ProductModal',
         'MyApp.model.ProductModel',
         'MyApp.view.mainTabPanel.MainTabPanel'
     ],
