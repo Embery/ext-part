@@ -27,7 +27,8 @@ Ext.define('MyApp.model.ProductModel', {
     ],
     proxy: {
         type: 'authedRest',
-        url : 'http://localhost:3000/products',
+        //Можно было бы задать относительный, но тогда не будет работать при запуске через sencha app watch
+        url : `http${/localhost/.test(location.host) ? '//localhost:3000': 's/ext-plus-react.herokuapp.com'}/products`,
         reader: {
             type: 'json',
             rootProperty: 'data',
