@@ -4,6 +4,7 @@ Ext.define('MyApp.view.mainTabPanel.MainPanel', {
 
     title: 'Товары',
     requires: ['MyApp.store.Products'],
+    referenceHolder: true,
     tbar: [
         {
             xtype: 'textfield',
@@ -11,8 +12,7 @@ Ext.define('MyApp.view.mainTabPanel.MainPanel', {
             listeners: {
                 specialkey: function(field, e){
                     if (e.getKey() == e.ENTER) {
-                        const table = field.up('panel').down('reactWrapper[reactComponent=ReactTable]');
-                        const store = table.props.store;
+                        const store = field.up('mainpanel').store;
                         const value = field.getValue();
                         if(value){
                             store.addFilter({
@@ -34,8 +34,7 @@ Ext.define('MyApp.view.mainTabPanel.MainPanel', {
             listeners: {
                 specialkey: function(field, e){
                     if (e.getKey() == e.ENTER) {
-                        const table = field.up('panel').down('reactWrapper[reactComponent=ReactTable]');
-                        const store = table.props.store;
+                        const store = field.up('mainpanel').store;
                         const value = field.getValue();
                         if(value){
                             store.addFilter({
@@ -54,8 +53,7 @@ Ext.define('MyApp.view.mainTabPanel.MainPanel', {
             xtype: 'button',
             text: 'Добавить',
             handler: (btn) => {
-                const table = btn.up('panel').down('reactWrapper[reactComponent=ReactTable]');
-                const store = table.props.store;
+                const store = btn.up('mainpanel').store;
                 const record = Ext.create('MyApp.model.ProductModel');
                 Ext.widget('productModal', {
                     viewModel: {
@@ -72,6 +70,7 @@ Ext.define('MyApp.view.mainTabPanel.MainPanel', {
         {
             xtype: 'reactWrapper',
             reactComponent: 'ReactTable',
+            reference: 'reactTable',
             props: {
                 size: 'small',
                 scroll: { y: 300 },
@@ -120,7 +119,7 @@ Ext.define('MyApp.view.mainTabPanel.MainPanel', {
                         width: 25,
                         render(text) {
                             if(text) return text;
-                            return ReactLibrary.default.createReactDiv({
+                            return ReactLibrary.default.lib.createReactDiv({
                                 content: String(text),
                                 style: {
                                     background: 'red',
@@ -137,6 +136,7 @@ Ext.define('MyApp.view.mainTabPanel.MainPanel', {
     initComponent() {
         const store = Ext.create('MyApp.store.Products');
         this.items[0].props.store = store;
+        this.store = store;
         this.callParent();
     }
 })

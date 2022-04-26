@@ -1,11 +1,11 @@
 Ext.define('view.ReactWrapper', {
-    extend: 'Ext.panel.Panel',
+    extend: 'Ext.Component',
     alias: 'widget.reactWrapper',
     listeners: {
       afterrender: function () {
         const ReactElement = React.createElement;
         try{
-            const component  = ReactLibrary.default[this.reactComponent];
+            const component  = ReactLibrary.default.lib[this.reactComponent];
             ReactDOM.render(
                 ReactElement(component, {
                     ...(this.props || {}),

@@ -94,8 +94,7 @@
         {
             "path": "app.js",
             "bundle": true
-        },
-        { "path": "react_lib/lib/react-library.bundle.js"}
+        }
     ],
 
     /**

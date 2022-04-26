@@ -47,7 +47,7 @@ Ext.define('MyApp.view.main.Login', {
                         const { response } = e;
                         if(response.status){
                             form.items.items.forEach(field => field.markInvalid(response.data.message));
-                            ReactLibrary.default.notify({
+                            ReactLibrary.default.lib.notify({
                                 type: 'error',
                                 message: 'Упс :с',
                                 description: response.data.message,
