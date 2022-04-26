@@ -100,6 +100,7 @@ Ext.define('MyApp.view.mainTabPanel.ProductModal', {
                         vm.get('record').save({success: (record, operation, success) => {
                             const store = vm.get('store');
                             store.load();
+                            ReactLibrary.default.lib.notify({message: 'Успех!', description: 'Запись успешно добавлена', type: 'success', duration: null})
                             btn.up('window').close();
                         }});
                     },
